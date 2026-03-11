@@ -74,7 +74,12 @@ emi-calculator-widget
 ├── backend
 │   ├── main.py
 │   ├── models.py
-│   ├── emi_service.py
+│   └── emi_service.py
+│
+├── screenshots
+│   ├── calculator.png
+│   ├── chart.png
+│   └── schedule.png
 │
 ├── emi-calculator.js
 ├── index.html
