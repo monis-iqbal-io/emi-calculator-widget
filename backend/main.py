@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from models import LoanRequest , LoanResponse
-from emi_service import calculate_emi , calculate_loan_summary , generate_amortization_schedule
+from backend.models import LoanRequest, LoanResponse
+from backend.emi_service import calculate_emi, calculate_loan_summary, generate_amortization_schedule
 
 
 app = FastAPI()
