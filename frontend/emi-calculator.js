@@ -343,7 +343,7 @@ async function calculateEMI(){
     tenureMonths = tenureYears;
     }
 
-    const response = await fetch("http://127.0.0.1:8000/api/calculate-emi" ,{
+    const response = await fetch("https://emi-calculator-api-kn60.onrender.com/api/calculate-emi" ,{
         method : "POST" ,
         headers : {
             "Content-Type" : "application/json"
