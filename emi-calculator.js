@@ -219,13 +219,13 @@ container.innerHTML = `
 
 <label>Loan Amount</label>
 <div class="currency-input">
-<input type="number" min="0" id="loanAmount">
+<input type="number" id="loanAmount"  min="10000" max="10000000">
 <span class="symbol">₹</span>
 </div>
 
 <label>Interest Rate</label>
 <div class="currency-input">
-<input type="number" min="0" id="interestRate">
+<input type="number" id="interestRate" min="1" max="30" step="0.01">
 <span class="symbol">%</span>
 </div>
 
@@ -233,7 +233,7 @@ container.innerHTML = `
 
 <div class="tenure-wrapper">
 
-<input type="number" id="tenure" min ="0" placeholder="Enter tenure">
+<input type="number" id="tenure" min ="1">
 
 <select id="tenureType">
 <option value="years">Years</option>
@@ -310,6 +310,26 @@ container.innerHTML = `
 
 const calculateBtn = document.getElementById("calculateBtn");
 
+//Validation for tenure 
+const tenureInput = document.getElementById("tenure");
+const tenureTypeSelect = document.getElementById("tenureType");
+
+
+tenureInput.max = 30;
+tenureInput.placeholder = "Enter tenure (1–30 years)";
+
+tenureTypeSelect.addEventListener("change", () => {
+    
+    if (tenureTypeSelect.value === "years") {
+        tenureInput.max = 30;
+        tenureInput.placeholder = "Enter tenure (1–30 years)";
+    } else {
+        tenureInput.max = 360;
+        tenureInput.placeholder = "Enter tenure (1–360 months)";
+    }
+});
+
+
 calculateBtn.addEventListener("click" , calculateEMI);
 
 async function calculateEMI(){
@@ -321,16 +341,38 @@ async function calculateEMI(){
     let errorMessage = document.getElementById("errorMessage");
     
     
-    if (!loanAmount || !interestRate || !tenureYears){
-        errorMessage.innerText = "Please fill all the input fields";
+    if (isNaN(loanAmount) || isNaN(interestRate) || isNaN(tenureYears)){
+        errorMessage.innerText = "Please fill all the input fields.";
+        return;
+    }
+    
+    if(loanAmount <10000 || loanAmount >10000000 ){
+        errorMessage.innerText = "Loan amount must be between ₹10,000 and ₹1 Crore.";
+        return;
+    }
+    
+    if (interestRate < 1 || interestRate > 30) {
+        errorMessage.innerText = "Interest rate must be between 1% and 30%.";
         return;
     }
 
-    if (loanAmount <= 0 || interestRate < 0 || tenureYears <=0){
-        errorMessage.innerText = "Values must be postive numbers.";
-        return;
-    }
-    errorMessage.innerText="";
+    let selectedTenureType = tenureTypeSelect.value;
+   
+    if (selectedTenureType === "years") {
+        if (tenureYears < 1 || tenureYears > 30) {
+            errorMessage.innerText = "Tenure must be between 1 and 30 years.";
+            return;
+            }
+        } 
+        else {
+            if (tenureYears < 1 || tenureYears > 360) {
+            errorMessage.innerText = "Tenure must be between 1 and 360 months.";
+            return;
+            }
+        }
+    
+
+    errorMessage.innerText = "";
 
 
     let tenureType = document.getElementById("tenureType").value;
@@ -422,10 +464,10 @@ loanChart = new Chart(ctx , {
 
         tr.innerHTML =`
         <td> ${row.month}</td>
-        <td> ${row.emi}</td>
-        <td> ${row.principal}</td>
-        <td> ${row.interest}</td>
-        <td> ${row.balance}</td>
+        <td> ${row.emi.toLocaleString()}</td>
+        <td> ${row.principal.toLocaleString()}</td>
+        <td> ${row.interest.toLocaleString()}</td>
+        <td> ${row.balance.toLocaleString()}</td>
         `;
         tableBody.appendChild(tr);
     });
