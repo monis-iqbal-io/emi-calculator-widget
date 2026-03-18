@@ -310,8 +310,53 @@ container.innerHTML = `
 
 const calculateBtn = document.getElementById("calculateBtn");
 
-//Validation for tenure 
+//Input elements
+const loanInput = document.getElementById("loanAmount");
+const interestInput = document.getElementById("interestRate");
 const tenureInput = document.getElementById("tenure");
+
+
+//loan amount restriction
+loanInput.addEventListener("input", () => {
+    if (loanInput.value > 10000000) {
+        loanInput.value = 10000000;
+    }
+    if (loanInput.value < 0) {
+        loanInput.value = "";
+    }
+});
+
+//interest rate restriction
+interestInput.addEventListener("input", () => {
+    if (interestInput.value > 30) {
+        interestInput.value = 30;
+    }
+    if (interestInput.value < 0) {
+        interestInput.value = "";
+    }
+});
+
+// tenure restriction
+tenureInput.addEventListener("input", () => {
+    let type = document.getElementById("tenureType").value;
+
+    if (type === "years") {
+        if (tenureInput.value > 30) {
+            tenureInput.value = 30;
+        }
+    } else {
+        if (tenureInput.value > 360) {
+            tenureInput.value = 360;
+        }
+    }
+
+    if (tenureInput.value < 0) {
+        tenureInput.value = "";
+    }
+});
+
+//Validation for tenure 
+
 const tenureTypeSelect = document.getElementById("tenureType");
 
 
