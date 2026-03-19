@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI , HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from backend.models import LoanRequest, LoanResponse
 from backend.emi_service import calculate_emi, calculate_loan_summary, generate_amortization_schedule
@@ -24,6 +24,15 @@ def calculate_emi_api(request:LoanRequest):
     loan_amount = request.loan_amount
     interest_rate = request.interest_rate
     tenure = request.tenure
+
+    if loan_amount < 10000 or loan_amount > 10000000:
+        raise HTTPException(status_code=400, detail="Loan amount must be between ₹10,000 and ₹1 Crore")
+
+    if interest_rate < 1 or interest_rate > 30:
+        raise HTTPException(status_code=400, detail="Interest rate must be between 1% and 30%")
+
+    if tenure < 1 or tenure > 360:
+        raise HTTPException(status_code=400, detail="Tenure must be between 1 and 360 months")
 
     emi = calculate_emi(loan_amount, interest_rate , tenure)
 
