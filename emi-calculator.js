@@ -57,11 +57,21 @@ style.innerHTML = `
 }
 
 /* Tenure Input + Select */
-
 .tenure-wrapper{
     display:flex;
     gap:10px;
     align-items:center;
+    flex-wrap:nowrap; 
+}
+
+.tenure-wrapper input{
+    flex:1;
+    min-width:0; 
+}
+
+.tenure-wrapper select{
+    width:120px; 
+    flex-shrink:0;
 }
 
 .tenure-wrapper input{
@@ -187,10 +197,6 @@ style.innerHTML = `
 @media (max-width:768px){
 
 .summary-cards{
-    flex-direction:column;
-}
-
-.tenure-wrapper{
     flex-direction:column;
 }
 
